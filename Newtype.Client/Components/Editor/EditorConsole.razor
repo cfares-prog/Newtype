@@ -1,0 +1,17 @@
+@using Microsoft.AspNetCore.Components.Web
+ 
+<div class="editor-container"
+            @onkeydown="HandleKeyDown"
+            @onkeydown:preventDefault="shouldPreventDefault"
+            tabindex="0">
+
+    <div class="canvas">
+       <pre>@VisibleText</pre>
+       <div class="cursor" style="left: @(Cursor_X)ch; top: @(Cursor_Y)em;"></div>
+    </div>
+    
+    tdiv class="status-bar">
+        <span>@CurrentMode</span>
+        <span>@Line:@Col</span>
+    </div>
+</div>

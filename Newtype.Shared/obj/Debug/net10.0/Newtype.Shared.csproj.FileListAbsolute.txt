@@ -1,0 +1,11 @@
+/home/faust/Coding/Newtype/Newtype.Shared/bin/Debug/net10.0/Newtype.Shared.deps.json
+/home/faust/Coding/Newtype/Newtype.Shared/bin/Debug/net10.0/Newtype.Shared.dll
+/home/faust/Coding/Newtype/Newtype.Shared/bin/Debug/net10.0/Newtype.Shared.pdb
+/home/faust/Coding/Newtype/Newtype.Shared/obj/Debug/net10.0/Newtype.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/home/faust/Coding/Newtype/Newtype.Shared/obj/Debug/net10.0/Newtype.Shared.AssemblyInfoInputs.cache
+/home/faust/Coding/Newtype/Newtype.Shared/obj/Debug/net10.0/Newtype.Shared.AssemblyInfo.cs
+/home/faust/Coding/Newtype/Newtype.Shared/obj/Debug/net10.0/Newtype.Shared.csproj.CoreCompileInputs.cache
+/home/faust/Coding/Newtype/Newtype.Shared/obj/Debug/net10.0/Newtype.Shared.dll
+/home/faust/Coding/Newtype/Newtype.Shared/obj/Debug/net10.0/refint/Newtype.Shared.dll
+/home/faust/Coding/Newtype/Newtype.Shared/obj/Debug/net10.0/Newtype.Shared.pdb
+/home/faust/Coding/Newtype/Newtype.Shared/obj/Debug/net10.0/ref/Newtype.Shared.dll

@@ -1,0 +1,9 @@
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/EmbeddedAttribute.cs
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/ValidatableTypeAttribute.cs
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/Newtype.Client.csproj.AssemblyReference.cache
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/rpswa.dswa.cache.json
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/Newtype.Client.GeneratedMSBuildEditorConfig.editorconfig
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/Newtype.Client.AssemblyInfoInputs.cache
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/Newtype.Client.AssemblyInfo.cs
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/Newtype.Client.csproj.CoreCompileInputs.cache
+/home/faust/Coding/Newtype/Newtype.Client/obj/Debug/net10.0/Newtype.Client.MvcApplicationPartsAssemblyInfo.cache

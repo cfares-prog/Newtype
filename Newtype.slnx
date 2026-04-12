@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Newtype.Client/Newtype.Client.csproj" />
+  <Project Path="Newtype.Shared/Newtype.Shared.csproj" />
+</Solution>
