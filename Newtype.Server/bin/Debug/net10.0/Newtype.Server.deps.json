@@ -1,0 +1,159 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Newtype.Server/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.WebAssembly.Server": "10.0.5",
+          "Microsoft.AspNetCore.OpenApi": "10.0.4",
+          "Newtype.Client": "1.0.0",
+          "Newtype.Shared": "1.0.0"
+        },
+        "runtime": {
+          "Newtype.Server.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Components.WebAssembly/10.0.5": {
+        "dependencies": {
+          "Microsoft.JSInterop.WebAssembly": "10.0.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.Components.WebAssembly.dll": {
+            "assemblyVersion": "10.0.5.0",
+            "fileVersion": "10.0.526.15411"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Components.WebAssembly.Server/10.0.5": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.WebAssembly": "10.0.5"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.Components.WebAssembly.Server.dll": {
+            "assemblyVersion": "10.0.5.0",
+            "fileVersion": "10.0.526.15411"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.OpenApi/10.0.4": {
+        "dependencies": {
+          "Microsoft.OpenApi": "2.0.0"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "assemblyVersion": "10.0.4.0",
+            "fileVersion": "10.0.426.12010"
+          }
+        }
+      },
+      "Microsoft.DotNet.HotReload.WebAssembly.Browser/10.0.104": {
+        "runtime": {
+          "lib/net10.0/Microsoft.DotNet.HotReload.WebAssembly.Browser.dll": {
+            "assemblyVersion": "10.0.104.0",
+            "fileVersion": "10.1.426.12010"
+          }
+        }
+      },
+      "Microsoft.JSInterop.WebAssembly/10.0.5": {
+        "runtime": {
+          "lib/net10.0/Microsoft.JSInterop.WebAssembly.dll": {
+            "assemblyVersion": "10.0.5.0",
+            "fileVersion": "10.0.526.15411"
+          }
+        }
+      },
+      "Microsoft.OpenApi/2.0.0": {
+        "runtime": {
+          "lib/net8.0/Microsoft.OpenApi.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        }
+      },
+      "Newtype.Client/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.WebAssembly": "10.0.5",
+          "Microsoft.DotNet.HotReload.WebAssembly.Browser": "10.0.104",
+          "Newtype.Shared": "1.0.0"
+        },
+        "runtime": {
+          "Newtype.Client.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Newtype.Shared/1.0.0": {
+        "runtime": {
+          "Newtype.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Newtype.Server/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.AspNetCore.Components.WebAssembly/10.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fjmhjvZpYTJVl/sxpDStP8+fQ6XEG8r9iuhafuTCp2nAAGPcJhsSND58he9BOekbxs6nMv2OECUGwtWqHBGFcg==",
+      "path": "microsoft.aspnetcore.components.webassembly/10.0.5",
+      "hashPath": "microsoft.aspnetcore.components.webassembly.10.0.5.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Components.WebAssembly.Server/10.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wDK4Yiuz9oq3LLO8ies4UzpRLGQ56WGHj099h0MzkFyU8YcaZJ9h76ZkBpcgJQPNECjxL0lXg4hQz2fhrt0qHQ==",
+      "path": "microsoft.aspnetcore.components.webassembly.server/10.0.5",
+      "hashPath": "microsoft.aspnetcore.components.webassembly.server.10.0.5.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.OpenApi/10.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OsEhbmT4Xenukau5YCR867gr/HmuAJ9DqMBPQGTcmdNU/TqBqdcnB+yLNwD/mTdkHzLBB+XG7cI4H1L5B1jx+Q==",
+      "path": "microsoft.aspnetcore.openapi/10.0.4",
+      "hashPath": "microsoft.aspnetcore.openapi.10.0.4.nupkg.sha512"
+    },
+    "Microsoft.DotNet.HotReload.WebAssembly.Browser/10.0.104": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OkWFygvFdm9emwxRW5ahcsU6saKO9EOYCFVNEXWl+23A4ssZy40VCQuqPhyurU7IyaPEhgA4iXh0/o7fhyNngA==",
+      "path": "microsoft.dotnet.hotreload.webassembly.browser/10.0.104",
+      "hashPath": "microsoft.dotnet.hotreload.webassembly.browser.10.0.104.nupkg.sha512"
+    },
+    "Microsoft.JSInterop.WebAssembly/10.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9iva1I1opPJA1xMSGTNmbyLhyzw383l6StST9gebB/UEBrYuadzwsv7O3eKAhmJVsPUGy6wWo4SVUcfFnPNQXA==",
+      "path": "microsoft.jsinterop.webassembly/10.0.5",
+      "hashPath": "microsoft.jsinterop.webassembly.10.0.5.nupkg.sha512"
+    },
+    "Microsoft.OpenApi/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GGYLfzV/G/ct80OZ45JxnWP7NvMX1BCugn/lX7TH5o0lcVaviavsLMTxmFV2AybXWjbi3h6FF1vgZiTK6PXndw==",
+      "path": "microsoft.openapi/2.0.0",
+      "hashPath": "microsoft.openapi.2.0.0.nupkg.sha512"
+    },
+    "Newtype.Client/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Newtype.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

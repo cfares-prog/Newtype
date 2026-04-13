@@ -3,7 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-var app = bulder.Build();
+var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
@@ -15,7 +15,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.MapRazorPage();
+app.MapRazorPages();
 app.MapControllers();
 
 app.MapFallbackToFile("index.html");
