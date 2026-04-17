@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.Web;
+using System.Text;
 
 namespace Newtype.Client.Components.Editor
 {
@@ -10,6 +11,15 @@ namespace Newtype.Client.Components.Editor
         Visual
     }
 
+    class BufferLine
+    {
+        public char[] Buffer = new char[50];
+        public int GapStart = 0;
+        public int GapEnd = 50;
+
+        public BufferLine(){}
+    }
+
     public partial class EditorConsole
     {
         private Mode CurrentMode = Mode.Normal;
@@ -17,76 +27,59 @@ namespace Newtype.Client.Components.Editor
         private int Cursor_Y = 0;
         private int Line = 1;
         private int Col = 1;
-        readonly static int ConsoleWidth = 120;
         private string VisibleText = "Welcome to Newtype";
         private bool shouldPreventDefault = true;
 
         //Buffer Management
-        private char[] Buffer = new char[ConsoleWidth * 50];
-        private int gapStart = 0;
-        private int gapEnd;
+        private List<BufferLine> Console = new List<BufferLine> { new BufferLine() };
+        private Queue<char[]> BufferPool = new Queue<char[]>();
 
-        private void MoveGapTo(int targetIndex)
+        private void ExpandBuffer(BufferLine line)
         {
+            char[] NewBuffer = new char[line.Buffer.Length * 2];
 
-            if(gapStart == targetIndex) return;
+            ReadOnlySpan<char> beforeGap = ExtractString(0, line.GapStart, line.Buffer);
+            ReadOnlySpan<char> afterGap = 
+                ExtractString(
+                    line.GapEnd, 
+                    line.Buffer.Length - line.GapEnd,
+                    line.Buffer);
 
-            if(targetIndex < gapStart)
-            {
-                int distance = gapStart - targetIndex;
-                while(distance > 0)
-                {
-                    gapStart--;
-                    gapEnd--;
-                    Buffer[gapEnd] = Buffer[gapStart];
-                    distance--;
-                }
-            }
-
-            if(targetIndex > gapStart)
-            {
-                int distance = targetIndex - targetIndex;
-                while(distance > 0)
-                {
-                    Buffer[gapStart] = Buffer[gapEnd];
-                    gapStart++;
-                    gapEnd++;
-                    distance--;
-                }
-            }
-        }
-
-        private void ExpandBuffer()
-        {
-            char[] NewBuffer = new char[Buffer.Length * 2];
-
-            ReadOnlySpan<char> beforeGap = ExtractString(0,gapStart);
-            ReadOnlySpan<char> afterGap = ExtractString(gapEnd, Buffer.Length - gapEnd);
-
-            gapEnd = NewBuffer.Length - afterGap.Length;
+            line.GapEnd = NewBuffer.Length - afterGap.Length;
 
             beforeGap.CopyTo(NewBuffer.AsSpan(0, beforeGap.Length));
-            afterGap.CopyTo( NewBuffer.AsSpan(gapEnd, afterGap.Length));
+            afterGap.CopyTo( NewBuffer.AsSpan(line.GapEnd, afterGap.Length));
 
-            Buffer = NewBuffer;
+            line.Buffer = NewBuffer;
         }
 
-        private void InsertCharacter(char c)
+        private void MoveLineGap(BufferLine line, int targetCol)
         {
-            if(gapStart == gapEnd) ExpandBuffer();
-            Buffer[gapStart] = c;
-            gapStart++;
-        }
+            if(line.GapStart == targetCol) return;
 
-        private void Backspace()
-        {
-            if(gapStart > 0)
+            while(line.GapStart > targetCol)
             {
-                gapStart--;
+                line.GapStart--;
+                line.GapEnd--;
+                line.Buffer[line.GapEnd] = line.Buffer[line.GapStart];
+            }
+        }
+        private void InsertCharacter(char c, BufferLine line)
+        {
+            if(line.GapStart == line.GapEnd) ExpandBuffer(line);
+            line.Buffer[line.GapStart] = c;
+            line.GapStart++;
+        }
+
+        private void Backspace(BufferLine line)
+        {
+            if(line.GapStart > 0)
+            {
+                line.GapStart--;
             }
         }
 
-        private ReadOnlySpan<char> ExtractString(int start, int end)
+        private ReadOnlySpan<char> ExtractString(int start, int end, char[] Buffer)
         {
             ReadOnlySpan<char> extractedPart = Buffer.AsSpan(start, end); 
             return extractedPart;
@@ -94,22 +87,25 @@ namespace Newtype.Client.Components.Editor
 
         private string GetVisibleText()
         {
-            ReadOnlySpan<char> beforeGap = ExtractString(0, gapStart);
-            ReadOnlySpan<char> afterGap = ExtractString(gapEnd, Buffer.Length - gapEnd);
-            return string.Concat(beforeGap, afterGap);
+            var sb = new StringBuilder();
+            foreach(var line in Console)
+            {
+                ReadOnlySpan<char> beforeGap = ExtractString(0, line.GapStart, line.Buffer);
+                ReadOnlySpan<char> afterGap = ExtractString(
+                        line.GapEnd, 
+                        line.Buffer.Length - line.GapEnd,
+                        line.Buffer
+                        );
+                 sb.Append(string.Concat(beforeGap, afterGap));
+                 sb.Append('\n');
+            }
+
+            return sb.ToString();
         }
 
         private static int GetBufferPosition(int x, int y)
         {
-            return (y * ConsoleWidth) + x;
-        }
-
-        protected override void OnInitialized()
-        {
-            for(int i = 0; i < Buffer.Length;i++)
-            {
-                Buffer[i] = ' ';
-            }
+            return 0;
         }
 
         public void HandleKeyDown(KeyboardEventArgs e)
@@ -208,9 +204,9 @@ namespace Newtype.Client.Components.Editor
                     {
                         Cursor_X++;
                         Col++;
-                        int index = GetBufferPosition(Cursor_X, Cursor_Y);
-                        MoveGapTo(index);
-                        InsertCharacter(char.Parse(e.Key));
+                        var currentLine = Console[Line - 1];
+                        MoveLineGap(currentLine, Col - 1);
+                        InsertCharacter(e.Key[0], currentLine);
                         VisibleText = GetVisibleText();
                     }
                     break;
