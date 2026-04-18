@@ -1,0 +1,41 @@
+.editor-container {
+    background-color: #1a1a1a;
+    color: #ececec;
+    padding: 20px;
+    outline: none;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 16px;
+    min-height: 300px; 
+}
+
+.canvas {
+    position: relative;
+    line-height: 1.5rem; 
+}
+
+.line, span {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.5rem;
+    white-space: pre; 
+    display: block;
+}
+
+.cursor {
+    position: absolute;
+    width: 1ch;
+    height: 1.5rem; 
+    background-color: rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 5;
+    border: 1px solid white;
+}
+
+.status-bar {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #888;
+}

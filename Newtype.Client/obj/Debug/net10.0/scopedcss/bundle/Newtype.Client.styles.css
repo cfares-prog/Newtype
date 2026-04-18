@@ -1,3 +1,45 @@
+/* /Components/Editor/EditorConsole.razor.rz.scp.css */
+.editor-container[b-8c6if5lcmp] {
+    background-color: #1a1a1a;
+    color: #ececec;
+    padding: 20px;
+    outline: none;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 16px;
+    min-height: 300px; 
+}
+
+.canvas[b-8c6if5lcmp] {
+    position: relative;
+    line-height: 1.5rem; 
+}
+
+.line[b-8c6if5lcmp], span[b-8c6if5lcmp] {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.5rem;
+    white-space: pre; 
+    display: block;
+}
+
+.cursor[b-8c6if5lcmp] {
+    position: absolute;
+    width: 1ch;
+    height: 1.5rem; 
+    background-color: rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 5;
+    border: 1px solid white;
+}
+
+.status-bar[b-8c6if5lcmp] {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #888;
+}
 /* /Layout/MainLayout.razor.rz.scp.css */
 .page[b-r98jp3e9mr] {
     position: relative;

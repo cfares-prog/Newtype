@@ -32,10 +32,6 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/faust/Coding/Newtype/Newtype.Client/Components/Editor/EditorConsole.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FZGl0b3IvRWRpdG9yQ29uc29sZS5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [/home/faust/Coding/Newtype/Newtype.Client/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -55,6 +51,10 @@ build_metadata.AdditionalFiles.CssScope =
 [/home/faust/Coding/Newtype/Newtype.Client/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
+
+[/home/faust/Coding/Newtype/Newtype.Client/Components/Editor/EditorConsole.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FZGl0b3IvRWRpdG9yQ29uc29sZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-8c6if5lcmp
 
 [/home/faust/Coding/Newtype/Newtype.Client/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0L01haW5MYXlvdXQucmF6b3I=
