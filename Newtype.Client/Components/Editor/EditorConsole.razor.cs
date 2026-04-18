@@ -17,7 +17,9 @@ namespace Newtype.Client.Components.Editor
         public int GapStart = 0;
         public int GapEnd = 50;
 
-        public BufferLine(){}
+        public int Length => GapStart + (Buffer.Length - GapEnd);
+        public ReadOnlySpan<char> GetBefore() => Buffer.AsSpan(0, GapStart);
+        public ReadOnlySpan<char> GetAfter() => Buffer.AsSpan(GapEnd);
     }
 
     public partial class EditorConsole
@@ -41,9 +43,9 @@ namespace Newtype.Client.Components.Editor
             ReadOnlySpan<char> beforeGap = ExtractString(0, line.GapStart, line.Buffer);
             ReadOnlySpan<char> afterGap = 
                 ExtractString(
-                    line.GapEnd, 
-                    line.Buffer.Length - line.GapEnd,
-                    line.Buffer);
+                        line.GapEnd, 
+                        line.Buffer.Length - line.GapEnd,
+                        line.Buffer);
 
             line.GapEnd = NewBuffer.Length - afterGap.Length;
 
@@ -53,14 +55,40 @@ namespace Newtype.Client.Components.Editor
             line.Buffer = NewBuffer;
         }
 
+        private void HandleEnter()
+        {
+            var currentLine = Console[Line - 1];
+
+            var newLine = new BufferLine();
+
+            ReadOnlySpan<char> textMovingDown = currentLine.GetAfter();
+
+            if (textMovingDown.Length > 0)
+            {
+                textMovingDown.CopyTo(newLine.Buffer.AsSpan());
+                newLine.GapStart = textMovingDown.Length;
+                newLine.GapEnd = newLine.Buffer.Length;
+            }
+
+            currentLine.GapEnd = currentLine.Buffer.Length;
+
+            Console.Insert(Line, newLine);
+        }
+
         private void MoveLineGap(BufferLine line, int targetCol)
         {
-            if(line.GapStart == targetCol) return;
+            targetCol = Math.Clamp(targetCol, 0, line.Length);
 
-            while(line.GapStart > targetCol)
+            while (line.GapStart < targetCol)
             {
-                line.GapStart--;
+                line.Buffer[line.GapStart] = line.Buffer[line.GapEnd];
+                line.GapStart++;
+                line.GapEnd++;
+            }
+            while (line.GapStart > targetCol)
+            {
                 line.GapEnd--;
+                line.GapStart--;
                 line.Buffer[line.GapEnd] = line.Buffer[line.GapStart];
             }
         }
@@ -69,14 +97,6 @@ namespace Newtype.Client.Components.Editor
             if(line.GapStart == line.GapEnd) ExpandBuffer(line);
             line.Buffer[line.GapStart] = c;
             line.GapStart++;
-        }
-
-        private void Backspace(BufferLine line)
-        {
-            if(line.GapStart > 0)
-            {
-                line.GapStart--;
-            }
         }
 
         private ReadOnlySpan<char> ExtractString(int start, int end, char[] Buffer)
@@ -101,11 +121,6 @@ namespace Newtype.Client.Components.Editor
             }
 
             return sb.ToString();
-        }
-
-        private static int GetBufferPosition(int x, int y)
-        {
-            return 0;
         }
 
         public void HandleKeyDown(KeyboardEventArgs e)
@@ -151,8 +166,11 @@ namespace Newtype.Client.Components.Editor
                     break;
 
                 case "j":
-                    Cursor_Y++;
-                    Line++;
+                    if(Line < Console.Count)
+                    {
+                        Cursor_Y++;
+                        Line++;
+                    }
                     break;
 
                 case "l":
@@ -188,29 +206,47 @@ namespace Newtype.Client.Components.Editor
 
         private void HandleInsertMode(KeyboardEventArgs e)
         {
-            switch(e.Key)
+            var currentLine = Console[Line - 1];
+
+            switch (e.Key)
             {
                 case "Escape":
-                    if(Col > 1)
-                    {
-                        Cursor_X--;
-                        Col--;
-                    }
+                    Cursor_X--;
                     CurrentMode = Mode.Normal;
                     break;
 
-                default:
-                    if(e.Key.Length == 1)
+                case "Enter":
+                    HandleEnter();
+                    Line++;
+                    Col = 1;
+                    Cursor_Y++;
+                    Cursor_X = 0;
+                    break;
+
+                case "Backspace":
+                    if (Col > 1)
                     {
-                        Cursor_X++;
-                        Col++;
-                        var currentLine = Console[Line - 1];
+                        currentLine.GapStart--; 
+                        Col--;
+                        Cursor_X--;
+                    }
+                    else if (Line > 1) 
+                    {
+                        // TODO: Logic for merging current line with the one above
+                    }
+                    break;
+
+                default:
+                    if (e.Key.Length == 1)
+                    {
                         MoveLineGap(currentLine, Col - 1);
                         InsertCharacter(e.Key[0], currentLine);
-                        VisibleText = GetVisibleText();
+                        Col++;
+                        Cursor_X++;
                     }
                     break;
             }
+            VisibleText = GetVisibleText();
         }
     }
 }
