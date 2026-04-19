@@ -1,4 +1,4 @@
-namespace Newtype.Client.Components
+namespace Newtype.Client.Core
 {
     public enum Mode 
     { 
