@@ -3,8 +3,7 @@ using System.Text;
 
 namespace Newtype.Client.Components.Editor
 {
-    public enum Mode { Normal, Insert, Visual }
-    class BufferLine
+    public class BufferLine
     {
         public char[] Buffer;
         public int GapStart;
@@ -67,9 +66,11 @@ namespace Newtype.Client.Components.Editor
             Buffer = newBuffer;
         }
     }
+
     public partial class EditorConsole
     {
         private Mode CurrentMode = Mode.Normal;
+        private bool IsTreeOpen { get; set; } = true;
 
         private int Row = 0; 
         private int Col = 0; 
@@ -78,6 +79,11 @@ namespace Newtype.Client.Components.Editor
         private bool shouldPreventDefault = true;
 
         private List<BufferLine> Console = new List<BufferLine> { new BufferLine() };
+
+        private void ToggleTree()
+        {
+            IsTreeOpen = !IsTreeOpen;
+        }
 
         private void ClampCursor()
         {
@@ -93,23 +99,27 @@ namespace Newtype.Client.Components.Editor
             {
                 Col = Math.Clamp(Col, 0, length);
             }
-}
+        }
 
         private void HandleEnter()
         {
             var currentLine = Console[Row];
-            currentLine.MoveGap(Col);
+            currentLine.MoveGap(Col); 
 
-            var newLine = new BufferLine();
             ReadOnlySpan<char> textMovingDown = currentLine.GetAfter();
+            int lengthToMove = textMovingDown.Length;
 
-            if (textMovingDown.Length > 0)
+            var newLine = new BufferLine(); 
+
+            if (lengthToMove > 0)
             {
-                textMovingDown.CopyTo(newLine.Buffer.AsSpan());
-                newLine.GapEnd = newLine.Buffer.Length - textMovingDown.Length;
+                newLine.GapEnd = newLine.Buffer.Length - lengthToMove;
+                textMovingDown.CopyTo(newLine.Buffer.AsSpan(newLine.GapEnd));
+                newLine.GapStart = 0; 
             }
 
-            currentLine.GapEnd = currentLine.Buffer.Length; 
+            currentLine.GapEnd = currentLine.Buffer.Length;
+
             Console.Insert(Row + 1, newLine);
         }
 
@@ -181,7 +191,8 @@ namespace Newtype.Client.Components.Editor
                           if (Col > 0) Col--; 
                           break;
                 case "l": 
-                          if (Col < Console[Row].Length) Col++; 
+                          int maxCol = Console[Row].Length > 0 ? Console[Row].Length - 1 : 0;
+                          if (Col < maxCol) Col++; 
                           break;
             }
         }

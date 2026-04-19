@@ -1,23 +1,53 @@
 @using Microsoft.AspNetCore.Components.Web
 
-<div class="editor-container"
-     @onkeydown="HandleKeyDown"
-     @onkeydown:preventDefault="shouldPreventDefault"
-     tabindex="0">
-
-    <div class="canvas">
-        <div class="cursor" style="left: @(Col)ch; top: @(Row * 1.5)rem;"></div>
-
-        @for (int i = 0; i < Console.Count; i++)
-        {
-            <div class="line">
-                <span>@Console[i].ToString()</span>
-            </div>
-        }
-    </div>
+<div class="newtype-layout @(IsTreeOpen ? "tree-open" : "tree-closed")">
     
-    <div class="status-bar">
-        <span>@CurrentMode</span>
-        <span>@(Row + 1):@(Col + 1)</span>
+    <div class="file-tree-container">
+        <div class="tree-header">
+            <span>EXPLORER</span>
+            <button class="toggle-btn" @onclick="ToggleTree" tabindex="-1">◀</button>
+        </div>
+        <div class="tree-content">
+            <div class="tree-item"><i class="nf nf-fa-folder"></i> src</div>
+            <div class="tree-item file"><i class="nf nf-fa-file_code"></i> main.c</div>
+            <div class="tree-item file"><i class="nf nf-fa-file_code"></i> program.cs</div>
+        </div>
+    </div>
+
+    <div class="editor-main">
+        @if (!IsTreeOpen)
+        {
+            <button class="toggle-btn open-btn" @onclick="ToggleTree" tabindex="-1">▶</button>
+        }
+
+        <div class="editor-container"
+             @onkeydown="HandleKeyDown"
+             @onkeydown:preventDefault="shouldPreventDefault"
+             tabindex="0">
+             
+            <div class="canvas">
+
+                @for (int i = 0; i < Console.Count; i++)
+                {
+                    <div class="line">
+                        @{
+                            var lineText = Console[i].ToString();
+                            if(string.IsNullOrEmpty(lineText))
+                            {
+                                <span>&#8203;</span>
+                            }
+                            else
+                            {
+                                <span>@lineText</span>
+                            }
+                        }
+                    </div>
+                }
+                <div class="cursor" style="left: @(Col)ch; top: @(Row * 1.5)rem;"></div>
+            </div>
+
+        </div>
+
+        <StatusBar CurrentMode="@CurrentMode" Row="@Row" Col="@Col" />
     </div>
 </div>

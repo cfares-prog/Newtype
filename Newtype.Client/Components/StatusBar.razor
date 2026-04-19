@@ -1,0 +1,22 @@
+@using Newtype.Client.Components;
+<div class="status-bar @GetModeClass()">
+    <div class="status-left">
+        <span class="mode-tag">@CurrentMode.ToString().ToUpper()</span>
+    </div>
+    <div class="status-right">
+        <span>@(Row + 1):@(Col + 1)</span>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Mode CurrentMode { get; set; }
+    [Parameter] public int Row { get; set; }
+    [Parameter] public int Col { get; set; }
+
+    private string GetModeClass() => CurrentMode switch
+    {
+        Mode.Insert => "mode-insert",
+        Mode.Visual => "mode-visual",
+        _ => "mode-normal"
+    };
+}
