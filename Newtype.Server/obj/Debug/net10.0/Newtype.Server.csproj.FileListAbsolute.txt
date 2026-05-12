@@ -58,3 +58,8 @@
 /home/faust/Coding/Newtype/Newtype.Server/obj/Debug/net10.0/Newtype.Server.pdb
 /home/faust/Coding/Newtype/Newtype.Server/obj/Debug/net10.0/Newtype.Server.genruntimeconfig.cache
 /home/faust/Coding/Newtype/Newtype.Server/obj/Debug/net10.0/ref/Newtype.Server.dll
+/home/Faust/coding/Newtype/Newtype.Server/bin/Debug/net10.0/Microsoft.AspNetCore.Http.Connections.Client.dll
+/home/Faust/coding/Newtype/Newtype.Server/bin/Debug/net10.0/Microsoft.AspNetCore.SignalR.Client.dll
+/home/Faust/coding/Newtype/Newtype.Server/bin/Debug/net10.0/Microsoft.AspNetCore.SignalR.Client.Core.dll
+/home/Faust/coding/Newtype/Newtype.Server/bin/Debug/net10.0/Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll
+/home/Faust/coding/Newtype/Newtype.Server/obj/Debug/net10.0/compressed/f32kn295nz-{0}-gcvjxldlff-gcvjxldlff.gz

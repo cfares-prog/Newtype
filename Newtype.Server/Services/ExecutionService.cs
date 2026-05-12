@@ -1,44 +1,50 @@
-public interface IExecutionService
-{
-    Task ExecuteAsync(string connectionId, CompileRequest request);
-}
+using System.Diagnostics;
+using Microsoft.AspNetCore.SignalR;
+using Newtype.Server.Hubs;
+using Newtype.Shared.Models;
 
-public class LocalExecutionService : IExecutionService
+namespace Newtype.Server.Services;
+
+public class ExecutionService
 {
     private readonly IHubContext<CompilerHub> _hubContext;
 
-    public LocalExecutionService(IHubContext<CompilerHub> hubContext)
-    {
-        _hubContext = hubContext;
-    }
+    public ExecutionService(IHubContext<CompilerHub> hubContext) => _hubContext = hubContext;
 
-    public async Task ExecuteAsync(string connectionId, CompileRequest request)
+    public async Task RunCompilerAsync(string connectionId, CompileRequest request)
     {
-        var tempPath = Path.Combine(Path.GetTempPath(), request.FileName);
-        await File.WriteAllTextAsync(tempPath, request.SourceCode);
+        var tempDir = Path.Combine(Path.GetTempPath(), "NewtypeBuilds", Guid.NewGuid().ToString());
+        Directory.CreateDirectory(tempDir);
+        
+        var filePath = Path.Combine(tempDir, request.FileName);
+        await File.WriteAllTextAsync(filePath, request.SourceCode);
 
-        var process = new Process
+        using var process = new Process
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "gcc", 
-                Arguments = $"{tempPath} -o out.exe",
+                FileName = "gcc",
+                Arguments = $"{filePath} -o {tempDir}/out",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                WorkingDirectory = tempDir
             }
         };
 
-        process.OutputDataReceived += async (s, e) => 
-        {
-            if (e.Data != null)
-                await _hubContext.Clients.Client(connectionId).
-                    SendAsync("ReceiveOutput", e.Data);
+        process.OutputDataReceived += async (s, e) => {
+            if (e.Data != null) await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", e.Data);
+        };
+        process.ErrorDataReceived += async (s, e) => {
+            if (e.Data != null) await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", $"Error: {e.Data}");
         };
 
         process.Start();
         process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
         await process.WaitForExitAsync();
+        
+        await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", "--- Process Exited ---");
     }
 }

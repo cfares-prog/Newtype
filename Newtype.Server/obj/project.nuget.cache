@@ -1,15 +1,19 @@
 {
   "version": 2,
-  "dgSpecHash": "mwn51PpadvM=",
+  "dgSpecHash": "BopQv15wzb0=",
   "success": true,
-  "projectFilePath": "/home/faust/Coding/Newtype/Newtype.Server/Newtype.Server.csproj",
+  "projectFilePath": "/home/Faust/coding/Newtype/Newtype.Server/Newtype.Server.csproj",
   "expectedPackageFiles": [
-    "/home/faust/.nuget/packages/microsoft.aspnetcore.components.webassembly/10.0.5/microsoft.aspnetcore.components.webassembly.10.0.5.nupkg.sha512",
-    "/home/faust/.nuget/packages/microsoft.aspnetcore.components.webassembly.server/10.0.5/microsoft.aspnetcore.components.webassembly.server.10.0.5.nupkg.sha512",
-    "/home/faust/.nuget/packages/microsoft.aspnetcore.openapi/10.0.4/microsoft.aspnetcore.openapi.10.0.4.nupkg.sha512",
-    "/home/faust/.nuget/packages/microsoft.dotnet.hotreload.webassembly.browser/10.0.104/microsoft.dotnet.hotreload.webassembly.browser.10.0.104.nupkg.sha512",
-    "/home/faust/.nuget/packages/microsoft.jsinterop.webassembly/10.0.5/microsoft.jsinterop.webassembly.10.0.5.nupkg.sha512",
-    "/home/faust/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512"
+    "/home/Faust/.nuget/packages/microsoft.aspnetcore.components.webassembly/10.0.5/microsoft.aspnetcore.components.webassembly.10.0.5.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.aspnetcore.components.webassembly.authentication/10.0.7/microsoft.aspnetcore.components.webassembly.authentication.10.0.7.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.aspnetcore.components.webassembly.server/10.0.5/microsoft.aspnetcore.components.webassembly.server.10.0.5.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.aspnetcore.http.connections.client/10.0.7/microsoft.aspnetcore.http.connections.client.10.0.7.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.aspnetcore.openapi/10.0.4/microsoft.aspnetcore.openapi.10.0.4.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.aspnetcore.signalr.client/10.0.7/microsoft.aspnetcore.signalr.client.10.0.7.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.aspnetcore.signalr.client.core/10.0.7/microsoft.aspnetcore.signalr.client.core.10.0.7.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.dotnet.hotreload.webassembly.browser/10.0.104/microsoft.dotnet.hotreload.webassembly.browser.10.0.104.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.jsinterop.webassembly/10.0.5/microsoft.jsinterop.webassembly.10.0.5.nupkg.sha512",
+    "/home/Faust/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512"
   ],
   "logs": []
 }
