@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/home/faust/Coding/Newtype/Newtype.Shared/Newtype.Shared.csproj": {}
+    "/home/Faust/coding/Newtype/Newtype.Shared/Newtype.Shared.csproj": {}
   },
   "projects": {
-    "/home/faust/Coding/Newtype/Newtype.Shared/Newtype.Shared.csproj": {
+    "/home/Faust/coding/Newtype/Newtype.Shared/Newtype.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/faust/Coding/Newtype/Newtype.Shared/Newtype.Shared.csproj",
+        "projectUniqueName": "/home/Faust/coding/Newtype/Newtype.Shared/Newtype.Shared.csproj",
         "projectName": "Newtype.Shared",
-        "projectPath": "/home/faust/Coding/Newtype/Newtype.Shared/Newtype.Shared.csproj",
-        "packagesPath": "/home/faust/.nuget/packages/",
-        "outputPath": "/home/faust/Coding/Newtype/Newtype.Shared/obj/",
+        "projectPath": "/home/Faust/coding/Newtype/Newtype.Shared/Newtype.Shared.csproj",
+        "packagesPath": "/home/Faust/.nuget/packages/",
+        "outputPath": "/home/Faust/coding/Newtype/Newtype.Shared/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/faust/.nuget/NuGet/NuGet.Config"
+          "/home/Faust/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "/usr/lib64/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -60,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/10.0.104/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.104/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

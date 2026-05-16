@@ -1,12 +1,24 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.SignalR.Client;
 using Newtype.Client.Core;
+using Newtype.Shared.Models; 
+using System.Net.Http.Json;
 using System.Text;
 
 namespace Newtype.Client.Components.Editor
 {
-
-    public partial class EditorConsole
+    public partial class EditorConsole : IAsyncDisposable
     {
+        private HubConnection? hubConnection;
+
+        [Inject] private NavigationManager Nav { get; set;} = default;
+        [Inject] private HttpClient Http { get; set; } = default;
+
+        private List<string> TerminalLines = new();
+        private bool IsTerminalOpen = false;
+        private bool IsCompiling = false;
+
         private Mode CurrentMode = Mode.Normal;
         private bool IsTreeOpen { get; set; } = true;
 
@@ -17,6 +29,48 @@ namespace Newtype.Client.Components.Editor
         private bool shouldPreventDefault = true;
 
         private List<BufferLine> Console = new List<BufferLine> { new() };
+
+        protected override async Task OnInitializedAsync()
+        {
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl(Nav.ToAbsoluteUri("/compilerHub"))
+                .WithAutomaticReconnect()
+                .Build();
+
+            hubConnection.On<string>("ReceiveTerminalOutput", (message) =>
+                    {
+                        TerminalLines.Add(message);
+                        StateHasChanged(); 
+                    });
+
+            await hubConnection.StartAsync();
+        }
+
+        private async Task RunCodeAsync()
+        {
+            if (hubConnection is null) return;
+
+            IsCompiling = true;
+            IsTerminalOpen = true;
+            TerminalLines.Clear();
+            TerminalLines.Add(">> Spawning compiler process...");
+            StateHasChanged();
+
+            var sourceCode = GetVisibleText(); 
+            var request = new CompileRequest(sourceCode, "c", "main.c");
+
+            await Http.PostAsJsonAsync($"api/compile/run?connectionId={hubConnection.ConnectionId}", request);
+
+            IsCompiling = false;
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (hubConnection is not null)
+            {
+                await hubConnection.DisposeAsync();
+            }
+        }
 
         private void ToggleTree()
         {
