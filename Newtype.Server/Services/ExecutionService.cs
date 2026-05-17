@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.SignalR;
+using Newtype.Server.Data;
 using Newtype.Server.Hubs;
+using Newtype.Server.Models;
 using Newtype.Shared.Models;
 using System.Runtime.InteropServices;
 
@@ -9,14 +11,21 @@ namespace Newtype.Server.Services;
 public class ExecutionService
 {
     private readonly IHubContext<CompilerHub> _hubContext;
+    private readonly AppDbContext _dbContext;
 
-    public ExecutionService(IHubContext<CompilerHub> hubContext) => _hubContext = hubContext;
+    public ExecutionService(IHubContext<CompilerHub> hubContext, AppContext dbContext) 
+    {
+        _hubContext = hubContext;
+        _dbContext = dbContext;
+    }
 
     public async Task RunCompilerAsync(string connectionId, CompileRequest request)
     {
         var tempDir = Path.Combine(Path.GetTempPath(), "NewtypeBuilds", Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDir);
         
+        bool compileSuccess = false;
+
         try
         {
             var filePath = Path.Combine(tempDir, request.FileName);
@@ -51,8 +60,9 @@ public class ExecutionService
             compileProcess.BeginOutputReadLine();
             compileProcess.BeginErrorReadLine();
             await compileProcess.WaitForExitAsync();
+            bool compileSucces = (compileProcess.ExitCode == 0);
 
-            if (compileProcess.ExitCode != 0)
+            if (!compileProcess)
             {
                 await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", "--- Compilation Failed ---");
                 return;
@@ -89,6 +99,17 @@ public class ExecutionService
         }
         finally
         {
+            var log = new SubmissionLog
+            {
+                ConnectionId = connectionId,
+                FileName = request.FileName,
+                SourceCode = request.SourceCode,
+                IsSuccess = compileSuccess
+            };
+
+            _dbContext.SubmissionLogs.Add(log);
+            await _dbContext.SaveChangesAsync();
+
             if (Directory.Exists(tempDir))
             {
                 Directory.Delete(tempDir, true);
