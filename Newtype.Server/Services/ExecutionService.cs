@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Newtype.Server.Data;
 using Newtype.Server.Hubs;
 using Newtype.Server.Models;
@@ -11,12 +12,12 @@ namespace Newtype.Server.Services;
 public class ExecutionService
 {
     private readonly IHubContext<CompilerHub> _hubContext;
-    private readonly AppDbContext _dbContext;
+    private readonly IServiceScopeFactory _scopeFactory;
 
-    public ExecutionService(IHubContext<CompilerHub> hubContext, AppContext dbContext) 
+    public ExecutionService(IHubContext<CompilerHub> hubContext, IServiceScopeFactory scopeFactory) 
     {
         _hubContext = hubContext;
-        _dbContext = dbContext;
+        _scopeFactory = scopeFactory;
     }
 
     public async Task RunCompilerAsync(string connectionId, CompileRequest request)
@@ -49,20 +50,21 @@ public class ExecutionService
                 }
             };
 
-            compileProcess.OutputDataReceived += async (s, e) => {
-                if (e.Data != null) await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", e.Data);
+            compileProcess.OutputDataReceived += (s, e) => {
+                if (e.Data != null) _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", e.Data).GetAwaiter().GetResult();
             };
-            compileProcess.ErrorDataReceived += async (s, e) => {
-                if (e.Data != null) await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", $"Compiler Error: {e.Data}");
+            compileProcess.ErrorDataReceived += (s, e) => {
+                if (e.Data != null) _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", $"Compiler Error: {e.Data}").GetAwaiter().GetResult();
             };
 
             compileProcess.Start();
             compileProcess.BeginOutputReadLine();
             compileProcess.BeginErrorReadLine();
             await compileProcess.WaitForExitAsync();
-            bool compileSucces = (compileProcess.ExitCode == 0);
+            
+            compileSuccess = (compileProcess.ExitCode == 0);
 
-            if (!compileProcess)
+            if (!compileSuccess)
             {
                 await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", "--- Compilation Failed ---");
                 return;
@@ -83,11 +85,11 @@ public class ExecutionService
                 }
             };
 
-            runProcess.OutputDataReceived += async (s, e) => {
-                if (e.Data != null) await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", e.Data);
+            runProcess.OutputDataReceived += (s, e) => {
+                if (e.Data != null) _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", e.Data).GetAwaiter().GetResult();
             };
-            runProcess.ErrorDataReceived += async (s, e) => {
-                if (e.Data != null) await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", $"Error: {e.Data}");
+            runProcess.ErrorDataReceived += (s, e) => {
+                if (e.Data != null) _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTerminalOutput", $"Error: {e.Data}").GetAwaiter().GetResult();
             };
 
             runProcess.Start();
@@ -99,16 +101,21 @@ public class ExecutionService
         }
         finally
         {
-            var log = new SubmissionLog
+            using (var scope = _scopeFactory.CreateScope())
             {
-                ConnectionId = connectionId,
-                FileName = request.FileName,
-                SourceCode = request.SourceCode,
-                IsSuccess = compileSuccess
-            };
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            _dbContext.SubmissionLogs.Add(log);
-            await _dbContext.SaveChangesAsync();
+                var log = new SubmissionLog
+                {
+                    ConnectionId = connectionId,
+                    FileName = request.FileName,
+                    SourceCode = request.SourceCode,
+                    IsSuccess = compileSuccess
+                };
+
+                dbContext.SubmissionLogs.Add(log);
+                await dbContext.SaveChangesAsync();
+            }
 
             if (Directory.Exists(tempDir))
             {

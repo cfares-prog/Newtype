@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Newtype.Server.Models;
 
+using Newtype.Server.Models;
 namespace Newtype.Server.Data;
 
 public class AppDbContext : DbContext

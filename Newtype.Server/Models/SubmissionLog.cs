@@ -1,6 +1,6 @@
 namespace Newtype.Server.Models;
 
-public class Submissionlog
+public class SubmissionLog
 {
     public int Id { get; set; }
     public string ConnectionId { get; set; } = string.Empty;
